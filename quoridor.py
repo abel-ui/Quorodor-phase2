@@ -26,14 +26,43 @@ class Quoridor:
         :raises QuoridorError: si la position d'un mur est invalide.
         """
         self.joueur1 = joueurs[0]
-        self. joueur2 = joueurs[1]
-
-        self.état_partie = {'état': {'joueurs': [{'nom': self.joueur1, 'murs': 10, 'pos': [5, 1]},
+        self.joueur2 = joueurs[1]
+        self.murs = murs
+        self.état_partie = {'joueurs': [{'nom': self.joueur1, 'murs': 10, 'pos': [5, 1]},
                            {'nom': self.joueur2, 'murs': 10, 'pos': [5, 9]}], 'murs': {'horizontaux': [],
-                            'verticaux': []}}}
+                            'verticaux': []}}
+        if hasattr(joueurs, '__iter__') is False:
+            raise QuorridorError
         if len(joueurs) > 2:
-            raise QuoridorError
-        if 
+            raise QuorridorError
+        for j in self.état_partie['joueurs']:
+            if j['murs'] > 10 or j['murs'] < 0:
+                raise QuorridorError
+            if j['pos'][0] > 9 or j['pos'][0] < 1:
+                raise QuoridorError
+            if j['pos'][1] > 9 or j['pos'][1] < 1:
+                raise QuorridorError
+        if self.état_partie.get('murs'):
+            if type(self.état_partie['murs']) != dict:
+                raise QuorridorError
+        a = self.état_partie['joueurs'][0]['murs'] + self.état_partie['joueurs'][1]['murs']
+        b = len(self.état_partie['murs']['horizontaux']) + len(self.état_partie['murs']['verticaux'])
+        if (a + b) != 20:
+            raise QuorridorError
+        for m in self.état_partie['murs']['horizontaux']:
+            if m[0] < 1 or m[0] > 8:
+                raise QuorridorError
+            if m[1] < 2 or m[1] > 9:
+                raise QuorridorError
+        for m in self.état_partie['murs']['verticaux']:
+            if m[0] < 2 or m[0] > 9:
+                raise QuorridorError
+            if m[1] < 1 or m[1] > 8:
+                raise QuorridorError
+        
+
+        
+        
     def __str__(self):
         """
         Produire la représentation en art ascii correspondant à l'état actuel de la partie. 
@@ -128,4 +157,4 @@ class Quoridor:
         :raises QuoridorError: le joueur a déjà placé tous ses murs.
         """
 class QuorridorError(Exception):
-    
+
