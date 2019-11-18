@@ -25,7 +25,15 @@ class Quoridor:
         :raises QuoridorError: si le total des murs placés et plaçables n'est pas égal à 20.
         :raises QuoridorError: si la position d'un mur est invalide.
         """
+        self.joueur1 = joueurs[0]
+        self. joueur2 = joueurs[1]
 
+        self.état_partie = {'état': {'joueurs': [{'nom': self.joueur1, 'murs': 10, 'pos': [5, 1]},
+                           {'nom': self.joueur2, 'murs': 10, 'pos': [5, 9]}], 'murs': {'horizontaux': [],
+                            'verticaux': []}}}
+        if len(joueurs) > 2:
+            raise QuoridorError
+        if 
     def __str__(self):
         """
         Produire la représentation en art ascii correspondant à l'état actuel de la partie. 
@@ -33,6 +41,22 @@ class Quoridor:
 
         :returns: la chaîne de caractères de la représentation.
         """
+        deb = 'Légende: 1='+str(self.état_partie['joueurs'][0]['nom'])+' 2=automate'+'\n'+'   '+35*'-'+'\n'
+    sui = ''
+    for i in range(8):
+        sui += str(9-i)+' | '+8*'.   '+'. |'+'\n'+'  |                                   |'+'\n'
+    fin = '1 |' + ' .  '*8 + ' . |'+'\n'+'--|' + '-'*35 + '\n'
+    fin2 = '  | 1   2   3   4   5   6   7   8   9'
+    tot = list(sui+fin+fin2)
+    for j in range(len(self.état_partie)):
+        tot[40*(18-2*self.état_partie['joueurs'][j]['pos'][1])+4*dico['joueurs'][j]['pos'][0]] = str(j+1)
+    for i in self.état_partie['murs']['horizontaux']:
+        for ading in range(7):
+            tot[40*(19-2*i[1])+4*i[0]-1+ading] = '-'
+    for place in self.état_partie['murs']['verticaux']:
+        for adding in range(3):
+            tot[40*(18-adding-2*place[1])+4*place[0]-2] = '|'
+    return deb + ''.join(tot)
 
     def déplacer_jeton(self, joueur, position):
         """
@@ -103,3 +127,5 @@ class Quoridor:
         :raises QuoridorError: la position est invalide pour cette orientation.
         :raises QuoridorError: le joueur a déjà placé tous ses murs.
         """
+class QuorridorError(Exception):
+    
